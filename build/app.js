@@ -15,19 +15,20 @@ const order_route_1 = __importDefault(require("./routes/order.route"));
 const notification_route_1 = __importDefault(require("./routes/notification.route"));
 const analytics_route_1 = __importDefault(require("./routes/analytics.route"));
 const layout_route_1 = __importDefault(require("./routes/layout.route"));
+const express_rate_limit_1 = require("express-rate-limit");
 exports.app.use(express_1.default.json({ limit: "50mb" }));
 exports.app.use((0, cookie_parser_1.default)());
 exports.app.use((0, cors_1.default)({
-    origin: ['https://lms-client-snowy.vercel.app', 'http://localhost:3000'],
+    origin: ['https://lms-client-snowy.vercel.app'],
     credentials: true,
 }));
-// api requests limit
-// const limiter = rateLimit({
-// windowMs: 15 * 60 * 1000, 
-// max: 100, 
-// standardHeaders: 'draft-7', 
-// legacyHeaders: false,
-// })
+//api requests limit
+const limiter = (0, express_rate_limit_1.rateLimit)({
+    windowMs: 15 * 60 * 1000,
+    max: 100,
+    standardHeaders: 'draft-7',
+    legacyHeaders: false,
+});
 exports.app.use("/api/v1", user_route_1.default, order_route_1.default, course_route_1.default, notification_route_1.default, analytics_route_1.default, layout_route_1.default);
 exports.app.get("/test", (req, res, next) => {
     res.status(200).json({
@@ -40,5 +41,5 @@ exports.app.all("*", (req, res, next) => {
     err.statusCode = 404;
     next(err);
 });
-//app.use(limiter);
+exports.app.use(limiter);
 exports.app.use(error_1.ErrorMiddleware);

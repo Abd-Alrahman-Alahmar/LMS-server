@@ -17,17 +17,17 @@ app.use(express.json({ limit: "50mb" }));
 app.use(cookieParser());
 
 app.use(cors({
-    origin: ['https://lms-client-snowy.vercel.app', 'http://localhost:3000'],
+    origin: ['https://lms-client-snowy.vercel.app'],
     credentials: true,
 }));
 
-// api requests limit
-// const limiter = rateLimit({
-// windowMs: 15 * 60 * 1000, 
-// max: 100, 
-// standardHeaders: 'draft-7', 
-// legacyHeaders: false,
-// })
+//api requests limit
+const limiter = rateLimit({
+windowMs: 15 * 60 * 1000, 
+max: 100, 
+standardHeaders: 'draft-7', 
+legacyHeaders: false,
+})
 
 app.use("/api/v1", userRouter, orderRouter, courseRouter, notificationRoute, analyticsRouter, layoutRouter);
 
@@ -45,6 +45,6 @@ app.all("*", (req: Request, res: Response, next: NextFunction) => {
     next(err);
 });
 
-//app.use(limiter);
+app.use(limiter);
 
 app.use(ErrorMiddleware);
