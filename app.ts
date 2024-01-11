@@ -22,12 +22,12 @@ app.use(cors({
 }));
 
 // api requests limit
-const limiter = rateLimit({
-windowMs: 15 * 60 * 1000, 
-max: 100, 
-standardHeaders: 'draft-7', 
-legacyHeaders: false,
-})
+// const limiter = rateLimit({
+// windowMs: 15 * 60 * 1000, 
+// max: 100, 
+// standardHeaders: 'draft-7', 
+// legacyHeaders: false,
+// })
 
 app.use("/api/v1", userRouter, orderRouter, courseRouter, notificationRoute, analyticsRouter, layoutRouter);
 
@@ -45,6 +45,6 @@ app.all("*", (req: Request, res: Response, next: NextFunction) => {
     next(err);
 });
 
-app.use(limiter);
+//app.use(limiter);
 
 app.use(ErrorMiddleware);
