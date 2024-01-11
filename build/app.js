@@ -19,7 +19,7 @@ const express_rate_limit_1 = require("express-rate-limit");
 exports.app.use(express_1.default.json({ limit: "50mb" }));
 exports.app.use((0, cookie_parser_1.default)());
 exports.app.use((0, cors_1.default)({
-    origin: ['https://lms-client-snowy.vercel.app'],
+    origin: ['https://lms-client-snowy.vercel.app', 'http://localhost:3000'],
     credentials: true,
 }));
 // api requests limit
